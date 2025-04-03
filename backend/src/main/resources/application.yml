@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: "dev"
+---
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+---
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    url: jdbc:posgresql://${DB_URL:localhost:5432}/postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
