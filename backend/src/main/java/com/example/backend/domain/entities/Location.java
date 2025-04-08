@@ -23,10 +23,12 @@ public class Location extends BaseEntity {
     @Column(name = "state")
     private String state;
 
-    @Column(name = "province")
-    private String province;
-
-    @Column(name = "zip")
+    @Column(name = "zip", unique = true)
     private String zip;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
 }

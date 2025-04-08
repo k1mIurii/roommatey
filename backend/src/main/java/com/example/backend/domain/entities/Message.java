@@ -14,13 +14,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Message extends BaseEntity{
 
-    @OneToOne
-    @JoinColumn(name = "sender_id")
-    private Profile sender;
+    @Column(name = "sender_id")
+    private Long senderId;
 
-    @OneToOne
-    @JoinColumn(name = "receiver_id")
-    private Profile receiver;
+    @Column(name = "receiver_id")
+    private Long receiverId;
 
     @Column(name = "message")
     private String message;
