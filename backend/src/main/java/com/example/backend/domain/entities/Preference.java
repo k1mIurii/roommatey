@@ -54,6 +54,6 @@ public class Preference extends BaseEntity {
     )
     private Set<Location> preferredLocations;
 
-    @Column(name = "distance")
-    private Integer preferredDistance;
+    @Column(name = "radius")
+    private Integer radius;
 }

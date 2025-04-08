@@ -46,4 +46,10 @@ public class Profile extends BaseEntity {
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(name = "ROOMMATE_NEEDED")
+    private Boolean isRoommateNeeded = Boolean.FALSE;
+
+    @Column(name = "HOUSING_NEEDED")
+    private Boolean isHousingNeeded = Boolean.FALSE;
 }

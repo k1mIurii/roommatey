@@ -30,8 +30,8 @@ public class Listing extends BaseEntity {
     private Integer price;
 
     @OneToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @Column(name = "available_from")
     private LocalDate availableFrom;
