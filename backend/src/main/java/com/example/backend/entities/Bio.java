@@ -1,4 +1,4 @@
-package com.example.backend.domain.entities;
+package com.example.backend.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,15 +16,12 @@ import java.util.Set;
 @AllArgsConstructor
 public class Bio extends BaseEntity{
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "description")
-    private String description;
+    @Column(name = "content")
+    private String content;
 
     @ManyToMany
     @JoinTable(
-            name = "bio_interest",
+            name = "bio_interests",
             joinColumns = @JoinColumn(name = "bio_id"),
             inverseJoinColumns = @JoinColumn(name = "interest_id")
     )
@@ -32,7 +29,7 @@ public class Bio extends BaseEntity{
 
     @ManyToMany
     @JoinTable(
-            name = "bio_language",
+            name = "bio_languages",
             joinColumns = @JoinColumn(name = "bio_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
