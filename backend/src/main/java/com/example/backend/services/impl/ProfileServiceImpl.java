@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,16 +37,14 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileDTO getProfileById(Long profileId) {
-        return null;
+        Profile profile = this.profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Record Not Found"));
+        return new ProfileDTO(profile);
     }
 
     @Override
     public ProfileDTO getProfileByEmail(String email) {
-        Optional<Profile> profileOptional = this.profileRepository.findByEmail(email);
-        if (profileOptional.isPresent()) {
-            return new ProfileDTO(profileOptional.get());
-        }
-        throw new RuntimeException("Record not found");
+        Profile profile = this.profileRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Record Not Found"));
+        return new ProfileDTO(profile);
     }
 
     @Override
@@ -63,20 +60,31 @@ public class ProfileServiceImpl implements ProfileService {
         //2.Select suitable profiles from database, except those who we already had interaction with
         //3.Create new Interactions objects and save them to database, in order to prevent duplicate profiles
         Set<ProfileDTO> result = new HashSet<>();
-
         List<Long> profileIdsThatInteractedWithProfile = this.interactionService.findInteractionsWhereProfileWasTargetAndAction(profileDTO.getId(), Action.LIKE).stream().map(Interaction::getProfileId).toList();
 
-        Set<ProfileDTO> profilesWhoLikedMe = this.profileRepository.findProfilesWhereIdIn(profileIdsThatInteractedWithProfile).stream().map(ProfileDTO::new).collect(Collectors.toSet());
-        result.addAll(profilesWhoLikedMe);
+        Set<ProfileDTO> interactedProfiles = this.profileRepository.findProfilesWhereIdIn(profileIdsThatInteractedWithProfile).stream().map(ProfileDTO::new).collect(Collectors.toSet());
+        result.addAll(interactedProfiles);
 
+        List<ProfileDTO> profiles = null;
 
         if (profileDTO.isHousingNeeded() && !profileDTO.isRoommateNeeded()) {
-            List<ProfileDTO> profiles = this.profileDao.findAllProfilesWhoPostedSuitableListing(profileDTO.getId());
-            //TODO add records to interactions table
+            profiles = this.profileDao.findAllProfilesWhoPostedSuitableListing(profileDTO.getId());
         }
 
         if (!profileDTO.isHousingNeeded() && profileDTO.isRoommateNeeded()) {
-            return null;
+            profiles = this.profileDao.findAllSuitableRoommates(profileDTO.getId());
+        }
+
+        if (null != profiles && !profiles.isEmpty()) {
+            List<Interaction> interactions = profiles.stream()
+                    .map(interaction ->
+                            Interaction.builder()
+                                    .profileId(profileDTO.getId())
+                                    .targetProfileId(interaction.getId())
+                                    .build())
+                    .toList();
+            this.interactionService.saveInteractions(interactions);
+            result.addAll(profiles);
         }
 
         return result;

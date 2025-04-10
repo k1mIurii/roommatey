@@ -31,7 +31,7 @@ public class InteractionServiceImpl implements InteractionService {
     }
 
     @Override
-    public void addInteractions(List<Interaction> interactions) {
+    public void saveInteractions(List<Interaction> interactions) {
         this.interactionRepository.saveAll(interactions);
     }
 }

@@ -10,5 +10,5 @@ public interface InteractionService {
 
     List<Interaction> findInteractionsWhereProfileWasTargetAndAction(Long profileId, Action action);
 
-    void addInteractions(List<Interaction> interactions);
+    void saveInteractions(List<Interaction> interactions);
 }

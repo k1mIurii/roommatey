@@ -1,9 +1,7 @@
 package com.example.backend.entities;
 
 import com.example.backend.enums.Action;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -13,7 +11,14 @@ import lombok.*;
 @Table(name = "interactions")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Interaction extends BaseEntity {
+@EqualsAndHashCode
+public class Interaction {
+
+    //For batch inserts
+    @Id
+    @SequenceGenerator(name = "id_seq_gen", allocationSize = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_seq_gen")
+    private Long id;
 
     @Column(name = "profile_id")
     private Long profileId;

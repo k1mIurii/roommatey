@@ -46,4 +46,7 @@ public class ProfileDao {
         return jdbcTemplate.query(query, new ProfileDtoRowMapper(), profileId);
     }
 
+    public List<ProfileDTO> findAllSuitableRoommates(Long profileId) {
+        return null;
+    }
 }
