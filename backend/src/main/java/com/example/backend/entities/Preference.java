@@ -1,6 +1,6 @@
-package com.example.backend.domain.entities;
+package com.example.backend.entities;
 
-import com.example.backend.domain.enums.Gender;
+import com.example.backend.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class Preference extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "gender_preferences",
             joinColumns = @JoinColumn(name = "preference_id"))
-    private Set<Gender> preferredGender;
+    private Set<Gender> preferredGenders;
 
     @Column(name = "budget_min")
     private Integer budgetMin;
@@ -46,13 +46,9 @@ public class Preference extends BaseEntity {
     @Column(name = "desired_move_out_date")
     private LocalDate desiredMoveOutDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "preferred_locations",
-            joinColumns = @JoinColumn(name = "preference_id"),
-            inverseJoinColumns = @JoinColumn(name = "location_id")
-    )
-    private Set<Location> preferredLocations;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     @Column(name = "radius")
     private Integer radius;

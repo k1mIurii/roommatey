@@ -1,6 +1,6 @@
-package com.example.backend.domain.entities;
+package com.example.backend.entities;
 
-import com.example.backend.domain.enums.Proficiency;
+import com.example.backend.enums.Proficiency;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Language extends BaseEntity{
 
+    @Column
     private String name;
 
     @Column(name = "proficiency")

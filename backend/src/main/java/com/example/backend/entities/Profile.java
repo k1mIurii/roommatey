@@ -1,6 +1,6 @@
-package com.example.backend.domain.entities;
+package com.example.backend.entities;
 
-import com.example.backend.domain.enums.Gender;
+import com.example.backend.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,20 +17,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Profile extends BaseEntity {
 
-    @Column(
-            name = "username",
-            nullable = false,
-            unique = true,
-            length = 50)
-    private String username;
-
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "phone_number", nullable = false, unique = true)
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @Transient
@@ -47,9 +43,17 @@ public class Profile extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "ROOMMATE_NEEDED")
+    @Column(name = "roommate_needed")
     private Boolean isRoommateNeeded = Boolean.FALSE;
 
-    @Column(name = "HOUSING_NEEDED")
+    @Column(name = "housing_needed")
     private Boolean isHousingNeeded = Boolean.FALSE;
+
+    @OneToOne
+    @JoinColumn(name = "listing_id")
+    private Listing listing;
+
+    @OneToOne
+    @JoinColumn(name = "preference_id")
+    private Preference preference;
 }
