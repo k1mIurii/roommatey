@@ -1,7 +1,6 @@
 package com.example.backend.repositories.jdbc;
 
 import com.example.backend.dtos.ProfileDTO;
-import com.example.backend.mappers.ProfileDtoRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -40,7 +39,7 @@ public class ProfileDao {
                 ORDER BY RANDOM()
                 LIMIT 10;
                 """;
-        return jdbcTemplate.query(query, new ProfileDtoRowMapper(), profileId);
+        return jdbcTemplate.query(query, new ProfileDTORowMapper(), profileId);
     }
 
     public List<ProfileDTO> findAllSuitableRoommates(Long profileId) {
@@ -69,6 +68,6 @@ public class ProfileDao {
                 ORDER BY RANDOM()
                 LIMIT 10;
                 """;
-        return jdbcTemplate.query(query, new ProfileDtoRowMapper(), profileId);
+        return jdbcTemplate.query(query, new ProfileDTORowMapper(), profileId);
     }
 }

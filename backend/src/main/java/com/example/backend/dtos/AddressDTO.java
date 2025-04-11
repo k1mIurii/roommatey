@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 public class AddressDTO {
     private Long id;
 
+    private LocationDTO location;
+
     private String street;
 
     private String apartment;
@@ -20,12 +22,4 @@ public class AddressDTO {
     private Double latitude;
 
     private Double longitude;
-
-    public AddressDTO(Address address) {
-        this.id = address.getId();
-        this.street = address.getStreet();
-        this.apartment = address.getApartment();
-        this.latitude = address.getLatitude();
-        this.longitude = address.getLongitude();
-    }
 }

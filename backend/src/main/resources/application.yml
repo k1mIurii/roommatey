@@ -36,3 +36,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        order_inserts: true
+        jdbc:
+          batch_size: 10

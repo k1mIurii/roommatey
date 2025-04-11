@@ -1,6 +1,5 @@
 package com.example.backend.dtos;
 
-import com.example.backend.entities.Location;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,14 +24,4 @@ public class LocationDTO {
     private Double latitude;
 
     private Double longitude;
-
-    public LocationDTO(Location location) {
-        this.id = location.getId();
-        this.country = location.getCountry();
-        this.city = location.getCity();
-        this.state = location.getState();
-        this.zip = location.getZip();
-        this.latitude = location.getLatitude();
-        this.longitude = location.getLongitude();
-    }
 }

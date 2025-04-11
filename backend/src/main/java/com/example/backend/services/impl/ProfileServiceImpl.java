@@ -4,6 +4,7 @@ import com.example.backend.dtos.ProfileDTO;
 import com.example.backend.entities.Interaction;
 import com.example.backend.entities.Profile;
 import com.example.backend.enums.Action;
+import com.example.backend.mappers.ProfileMapper;
 import com.example.backend.repositories.jdbc.ProfileDao;
 import com.example.backend.repositories.jpa.ProfileRepository;
 import com.example.backend.services.InteractionService;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,64 +24,74 @@ import java.util.stream.Collectors;
 public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileDao profileDao;
+    private final ProfileMapper profileMapper;
     private final ProfileRepository profileRepository;
     private final InteractionService interactionService;
 
     @Override
-    public ProfileDTO createProfile(ProfileDTO profileDTO) {
+    public Profile createProfile(Profile profile) {
         return null;
     }
 
     @Override
-    public ProfileDTO updateProfile(Long profileId, ProfileDTO profileDTO) {
+    public Profile updateProfile(Long id, Profile profile) {
         return null;
     }
 
     @Override
-    public ProfileDTO getProfileById(Long profileId) {
-        Profile profile = this.profileRepository.findByIdAndDeletedAtIsNull(profileId).orElseThrow(() -> new RuntimeException("Record Not Found"));
-        return new ProfileDTO(profile);
+    public Profile getProfileById(Long id) {
+        return this.profileRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
     }
 
     @Override
-    public ProfileDTO getProfileByEmail(String email) {
-        Profile profile = this.profileRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(() -> new RuntimeException("Record Not Found"));
-        return new ProfileDTO(profile);
+    public Profile getProfileByEmail(String email) {
+        return this.profileRepository.findByEmailAndDeletedAtIsNull(email)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
     }
 
     @Override
-    public void deleteProfile(Long profileId) {
-        Profile profile = this.profileRepository.findByIdAndDeletedAtIsNull(profileId).orElseThrow(() -> new RuntimeException("Record not found"));
+    public void deleteProfileById(Long id) {
+        Profile profile = this.profileRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
         profile.setDeletedAt(LocalDateTime.now());
         this.profileRepository.saveAndFlush(profile);
     }
 
     @Override
-    public Set<ProfileDTO> getMatchingProfiles(ProfileDTO profileDTO) {
+    public Collection<ProfileDTO> getMatchingProfiles(Long id) {
         //1.Get profiles who liked my profile
         //2.Select suitable profiles from database, except those who we already had interaction with
         //3.Create new Interactions objects and save them to database, in order to prevent duplicate profiles
-        Set<ProfileDTO> result = new HashSet<>();
-        List<Long> profileIdsThatInteractedWithProfile = this.interactionService.findInteractionsWhereProfileWasTargetAndAction(profileDTO.getId(), Action.LIKE).stream().map(Interaction::getProfileId).toList();
 
-        Set<ProfileDTO> interactedProfiles = this.profileRepository.findProfilesWhereIdIn(profileIdsThatInteractedWithProfile).stream().map(ProfileDTO::new).collect(Collectors.toSet());
+        Profile profile = this.getProfileById(id);
+        Set<ProfileDTO> result = new HashSet<>();
+
+        List<Long> profileIdsThatInteractedWithProfile =
+                this.interactionService.findInteractionsWhereProfileWasTargetAndAction(id, Action.LIKE).stream()
+                        .map(Interaction::getProfileId).toList();
+
+        Set<ProfileDTO> interactedProfiles = this.profileRepository.findProfilesWhereIdIn(profileIdsThatInteractedWithProfile)
+                .stream().map(profileMapper::toDto)
+                .collect(Collectors.toSet());
+
         result.addAll(interactedProfiles);
 
         List<ProfileDTO> profiles = null;
 
-        if (profileDTO.isHousingNeeded() && !profileDTO.isRoommateNeeded()) {
-            profiles = this.profileDao.findAllProfilesWhoPostedSuitableListing(profileDTO.getId());
+        if (profile.getIsHousingNeeded().equals(Boolean.TRUE) && profile.getIsRoommateNeeded().equals(Boolean.FALSE)) {
+            profiles = this.profileDao.findAllProfilesWhoPostedSuitableListing(id);
         }
 
-        if (!profileDTO.isHousingNeeded() && profileDTO.isRoommateNeeded()) {
-            profiles = this.profileDao.findAllSuitableRoommates(profileDTO.getId());
+        if (profile.getIsHousingNeeded().equals(Boolean.FALSE) && profile.getIsRoommateNeeded().equals(Boolean.TRUE)) {
+            profiles = this.profileDao.findAllSuitableRoommates(id);
         }
 
         if (null != profiles && !profiles.isEmpty()) {
             List<Interaction> interactions = profiles.stream()
                     .map(dto ->
                             Interaction.builder()
-                                    .profileId(profileDTO.getId())
+                                    .profileId(id)
                                     .targetProfileId(dto.getId())
                                     .build())
                     .toList();
