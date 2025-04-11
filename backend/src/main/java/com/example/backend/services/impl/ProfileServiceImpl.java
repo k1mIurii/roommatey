@@ -37,19 +37,19 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileDTO getProfileById(Long profileId) {
-        Profile profile = this.profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Record Not Found"));
+        Profile profile = this.profileRepository.findByIdAndDeletedAtIsNull(profileId).orElseThrow(() -> new RuntimeException("Record Not Found"));
         return new ProfileDTO(profile);
     }
 
     @Override
     public ProfileDTO getProfileByEmail(String email) {
-        Profile profile = this.profileRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Record Not Found"));
+        Profile profile = this.profileRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(() -> new RuntimeException("Record Not Found"));
         return new ProfileDTO(profile);
     }
 
     @Override
     public void deleteProfile(Long profileId) {
-        Profile profile = this.profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Record not found"));
+        Profile profile = this.profileRepository.findByIdAndDeletedAtIsNull(profileId).orElseThrow(() -> new RuntimeException("Record not found"));
         profile.setDeletedAt(LocalDateTime.now());
         this.profileRepository.saveAndFlush(profile);
     }
@@ -77,10 +77,10 @@ public class ProfileServiceImpl implements ProfileService {
 
         if (null != profiles && !profiles.isEmpty()) {
             List<Interaction> interactions = profiles.stream()
-                    .map(interaction ->
+                    .map(dto ->
                             Interaction.builder()
                                     .profileId(profileDTO.getId())
-                                    .targetProfileId(interaction.getId())
+                                    .targetProfileId(dto.getId())
                                     .build())
                     .toList();
             this.interactionService.saveInteractions(interactions);

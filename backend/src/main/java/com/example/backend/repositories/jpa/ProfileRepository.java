@@ -10,9 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    Optional<Profile> findByEmail(String email);
+    Optional<Profile> findByEmailAndDeletedAtIsNull(String email);
 
     @Query("select p from Profile p where p.id in :ids")
     List<Profile> findProfilesWhereIdIn(List<Long> ids);
 
+    Optional<Profile> findByIdAndDeletedAtIsNull(Long id);
 }
