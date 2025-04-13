@@ -4,12 +4,14 @@ import com.example.backend.dtos.ProfileDTO;
 import com.example.backend.entities.Interaction;
 import com.example.backend.entities.Profile;
 import com.example.backend.enums.Action;
+import com.example.backend.exceptions.RecordNotFoundException;
 import com.example.backend.mappers.ProfileMapper;
 import com.example.backend.repositories.jdbc.ProfileDao;
 import com.example.backend.repositories.jpa.ProfileRepository;
 import com.example.backend.services.InteractionService;
 import com.example.backend.services.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,30 +32,33 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Profile createProfile(Profile profile) {
-        return null;
+        return this.profileRepository.save(profile);
     }
 
     @Override
     public Profile updateProfile(Long id, Profile profile) {
-        return null;
+        Profile existedProfile = this.profileRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with id %s not found", id)));
+        BeanUtils.copyProperties(profile, existedProfile);
+        return this.profileRepository.save(existedProfile);
     }
 
     @Override
     public Profile getProfileById(Long id) {
         return this.profileRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RuntimeException("Record not found"));
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with id %s not found", id)));
     }
 
     @Override
     public Profile getProfileByEmail(String email) {
         return this.profileRepository.findByEmailAndDeletedAtIsNull(email)
-                .orElseThrow(() -> new RuntimeException("Record not found"));
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with email %s not found", email)));
     }
 
     @Override
     public void deleteProfileById(Long id) {
         Profile profile = this.profileRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RuntimeException("Record not found"));
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with id %s not found", id)));
         profile.setDeletedAt(LocalDateTime.now());
         this.profileRepository.saveAndFlush(profile);
     }
