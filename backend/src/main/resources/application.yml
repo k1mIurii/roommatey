@@ -16,12 +16,13 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         order_inserts: true
         jdbc:
           batch_size: 10
+    show-sql: true
 ---
 spring:
   config:

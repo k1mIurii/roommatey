@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Address extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 

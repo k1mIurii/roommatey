@@ -14,8 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Listing extends BaseEntity {
 
-    @OneToOne
-    @JoinColumn(name = "profile_id")
+    @OneToOne(mappedBy = "listing")
     private Profile profile;
 
     @Column(name = "title")
@@ -27,7 +26,7 @@ public class Listing extends BaseEntity {
     @Column(name = "price")
     private Integer price;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 

@@ -4,6 +4,7 @@ import com.example.backend.dtos.ProfileDTO;
 import com.example.backend.entities.Profile;
 import com.example.backend.mappers.BioMapper;
 import com.example.backend.mappers.ListingMapper;
+import com.example.backend.mappers.PreferenceMapper;
 import com.example.backend.mappers.ProfileMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class ProfileMapperImpl implements ProfileMapper {
 
     private final BioMapper bioMapper;
     private final ListingMapper listingMapper;
+    private final PreferenceMapper preferenceMapper;
 
     @Override
     public Profile fromDto(ProfileDTO profileDTO) {
@@ -32,8 +34,9 @@ public class ProfileMapperImpl implements ProfileMapper {
                         bioMapper.fromDto(profileDTO.getBio())
                 )
                 .listing(
-                        listingMapper.fromDto(profileDTO.getListing())
+                        profileDTO.getListing() != null ? listingMapper.fromDto(profileDTO.getListing()) : null
                 )
+                .preference(preferenceMapper.fromDto(profileDTO.getPreference()))
                 .build();
         profile.setId(profileDTO.getId());
         return profile;
@@ -46,6 +49,7 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .name(profile.getName())
                 .email(profile.getEmail())
                 .phoneNumber(profile.getPhoneNumber())
+                .dob(profile.getDob())
                 .age(Period.between(profile.getDob(), LocalDate.now()).getYears())
                 .gender(profile.getGender())
                 .isRoommateNeeded(profile.getIsRoommateNeeded())
@@ -54,8 +58,9 @@ public class ProfileMapperImpl implements ProfileMapper {
                         bioMapper.toDto(profile.getBio())
                 )
                 .listing(
-                        listingMapper.toDto(profile.getListing())
+                        profile.getListing() != null ? listingMapper.toDto(profile.getListing()) : null
                 )
+                .preference(preferenceMapper.toDto(profile.getPreference()))
                 .build();
     }
 

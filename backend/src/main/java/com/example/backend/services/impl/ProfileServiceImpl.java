@@ -32,14 +32,14 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Profile createProfile(Profile profile) {
-        return this.profileRepository.save(profile);
+        return this.profileRepository.saveAndFlush(profile);
     }
 
     @Override
     public Profile updateProfile(Long id, Profile profile) {
         Profile existedProfile = this.profileRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with id %s not found", id)));
-        BeanUtils.copyProperties(profile, existedProfile);
+        BeanUtils.copyProperties(profile, existedProfile, "id");
         return this.profileRepository.save(existedProfile);
     }
 
@@ -56,11 +56,21 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void deleteProfileById(Long id) {
-        Profile profile = this.profileRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with id %s not found", id)));
-        profile.setDeletedAt(LocalDateTime.now());
-        this.profileRepository.saveAndFlush(profile);
+    public void deleteProfileByEither(Long id, String email) {
+        if (null == email && null == id) {
+            throw new RecordNotFoundException("Unable to delete profile with null id and empty email");
+        }
+
+        Profile toDelete;
+        if (null != email) {
+            toDelete = this.profileRepository.findByEmailAndDeletedAtIsNull(email)
+                    .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with email %s not found", email)));
+        } else {
+            toDelete = this.profileRepository.findByIdAndDeletedAtIsNull(id)
+                    .orElseThrow(() -> new RecordNotFoundException(String.format("Profile with id %s not found", id)));
+        }
+        toDelete.setDeletedAt(LocalDateTime.now());
+        this.profileRepository.saveAndFlush(toDelete);
     }
 
     @Override

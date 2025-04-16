@@ -1,6 +1,7 @@
 package com.example.backend.dtos;
 
 import com.example.backend.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class ProfileDTO {
     @NotBlank(message = "Email is required.")
     private String email;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
 
     private Integer age;
@@ -43,7 +45,7 @@ public class ProfileDTO {
 
     @NotNull
     @Valid
-    private PreferenceDTO preferences;
+    private PreferenceDTO preference;
 
     @NotNull
     @Valid

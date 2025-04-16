@@ -36,9 +36,16 @@ public class ProfileController {
         return new ResponseEntity<>(this.profileMapper.toDto(profile), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<?> deleteProfile(@PathVariable("id") Long id) {
-        this.profileService.deleteProfileById(id);
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<?> deleteProfile(@RequestParam(name = "id", required = false) Long id,
+                                           @RequestParam(name = "email", required = false) String email) {
+        this.profileService.deleteProfileByEither(id, email);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<ProfileDTO> getProfileByEmail(@RequestParam("email") String email) {
+        Profile profileByEmail = this.profileService.getProfileByEmail(email);
+        return new ResponseEntity<>(this.profileMapper.toDto(profileByEmail), HttpStatus.OK);
     }
 }

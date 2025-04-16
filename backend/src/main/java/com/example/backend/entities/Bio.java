@@ -17,7 +17,7 @@ public class Bio extends BaseEntity{
     @Column(name = "content")
     private String content;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "bio_interests",
             joinColumns = @JoinColumn(name = "bio_id"),
@@ -25,7 +25,7 @@ public class Bio extends BaseEntity{
     )
     private Set<Interest> interests;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "bio_languages",
             joinColumns = @JoinColumn(name = "bio_id"),

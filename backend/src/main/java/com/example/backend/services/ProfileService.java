@@ -15,7 +15,7 @@ public interface ProfileService {
 
     Profile getProfileByEmail(String email);
 
-    void deleteProfileById(Long id);
+    void deleteProfileByEither(Long id, String email);
 
     Collection<ProfileDTO> getMatchingProfiles(Long id);
 }
