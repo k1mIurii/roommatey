@@ -2,14 +2,12 @@ package com.example.backend.entities;
 
 import com.example.backend.enums.Gender;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@Builder
 @Getter
 @Setter
 @Entity
@@ -18,8 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class Preference extends BaseEntity {
 
-    @OneToOne
-    @JoinColumn(name = "profile_id")
+    @OneToOne(mappedBy = "preference", fetch = FetchType.EAGER)
     private Profile profile;
 
     @Column(name = "min_age")
@@ -46,7 +43,7 @@ public class Preference extends BaseEntity {
     @Column(name = "desired_move_out_date")
     private LocalDate desiredMoveOutDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private Location location;
 

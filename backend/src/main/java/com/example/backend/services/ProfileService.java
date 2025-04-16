@@ -1,20 +1,21 @@
 package com.example.backend.services;
 
 import com.example.backend.dtos.ProfileDTO;
+import com.example.backend.entities.Profile;
 
-import java.util.Set;
+import java.util.Collection;
 
 public interface ProfileService {
 
-    ProfileDTO createProfile(ProfileDTO profileDTO);
+    Profile createProfile(Profile profile);
 
-    ProfileDTO updateProfile(Long profileId, ProfileDTO profileDTO);
+    Profile updateProfile(Long profileId, Profile profile);
 
-    ProfileDTO getProfileById(Long profileId);
+    Profile getProfileById(Long id);
 
-    ProfileDTO getProfileByEmail(String email);
+    Profile getProfileByEmail(String email);
 
-    void deleteProfile(Long profileId);
+    void deleteProfileByEither(Long id, String email);
 
-    Set<ProfileDTO> getMatchingProfiles(ProfileDTO profileDTO);
+    Collection<ProfileDTO> getMatchingProfiles(Long id);
 }

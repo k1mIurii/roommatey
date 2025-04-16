@@ -2,13 +2,11 @@ package com.example.backend.entities;
 
 import com.example.backend.enums.Gender;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@Builder
 @Getter
 @Setter
 @Entity
@@ -23,7 +21,7 @@ public class Profile extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "phone_number", nullable = false)
@@ -35,8 +33,8 @@ public class Profile extends BaseEntity {
     @Column(name = "dob")
     private LocalDate dob;
 
-    @OneToOne
-    @JoinColumn(name = "bio_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bio_id", referencedColumnName = "id")
     private Bio bio;
 
     @Column(name = "gender")
@@ -49,11 +47,11 @@ public class Profile extends BaseEntity {
     @Column(name = "housing_needed")
     private Boolean isHousingNeeded = Boolean.FALSE;
 
-    @OneToOne
-    @JoinColumn(name = "listing_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "listing_id", referencedColumnName = "id")
     private Listing listing;
 
-    @OneToOne
-    @JoinColumn(name = "preference_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "preference_id", referencedColumnName = "id")
     private Preference preference;
 }

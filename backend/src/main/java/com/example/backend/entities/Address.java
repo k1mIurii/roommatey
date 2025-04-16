@@ -1,11 +1,9 @@
 package com.example.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @Entity
@@ -14,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Address extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 

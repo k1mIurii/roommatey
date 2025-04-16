@@ -1,6 +1,7 @@
 package com.example.backend.dtos;
 
-import com.example.backend.entities.Location;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,25 +15,21 @@ public class LocationDTO {
 
     private Long id;
 
+    @NotBlank
     private String country;
 
+    @NotBlank
     private String city;
 
+    @NotBlank
     private String state;
 
+    @NotBlank
     private String zip;
 
+    @NotNull
     private Double latitude;
 
+    @NotNull
     private Double longitude;
-
-    public LocationDTO(Location location) {
-        this.id = location.getId();
-        this.country = location.getCountry();
-        this.city = location.getCity();
-        this.state = location.getState();
-        this.zip = location.getZip();
-        this.latitude = location.getLatitude();
-        this.longitude = location.getLongitude();
-    }
 }

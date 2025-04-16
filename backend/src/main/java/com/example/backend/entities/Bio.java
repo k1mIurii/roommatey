@@ -1,13 +1,11 @@
 package com.example.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
+@Builder
 @Getter
 @Setter
 @Entity
@@ -19,7 +17,7 @@ public class Bio extends BaseEntity{
     @Column(name = "content")
     private String content;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "bio_interests",
             joinColumns = @JoinColumn(name = "bio_id"),
@@ -27,11 +25,11 @@ public class Bio extends BaseEntity{
     )
     private Set<Interest> interests;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "bio_languages",
             joinColumns = @JoinColumn(name = "bio_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
-    private Set<Language> spokenLanguages;
+    private Set<Language> languages;
 }

@@ -1,4 +1,4 @@
-package com.example.backend.mappers;
+package com.example.backend.repositories.jdbc;
 
 import com.example.backend.dtos.ProfileDTO;
 import com.example.backend.enums.Gender;
@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProfileDtoRowMapper implements RowMapper<ProfileDTO> {
+public class ProfileDTORowMapper implements RowMapper<ProfileDTO> {
     @Override
     public ProfileDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
         return ProfileDTO.builder()

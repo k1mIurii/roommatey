@@ -1,37 +1,51 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.ProfileDTO;
+import com.example.backend.entities.Profile;
+import com.example.backend.mappers.ProfileMapper;
 import com.example.backend.services.ProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(name = "/api/v1/profiles")
+@RequestMapping(path = "/api/v1/profiles")
 @RequiredArgsConstructor
 public class ProfileController {
 
+    private final ProfileMapper profileMapper;
     private final ProfileService profileService;
 
-    @GetMapping(name = "/{id}")
-    public ResponseEntity<ProfileDTO> getProfile(@PathVariable Long id) {
-        return new ResponseEntity<>(this.profileService.getProfileById(id), HttpStatus.OK);
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ProfileDTO> getProfile(@PathVariable("id") Long id) {
+        Profile profile = this.profileService.getProfileById(id);
+        return new ResponseEntity<>(this.profileMapper.toDto(profile), HttpStatus.OK);
     }
 
-    @PostMapping(name = "/create")
-    public ResponseEntity<ProfileDTO> createProfile(@RequestBody ProfileDTO profileDTO) {
-        return new ResponseEntity<>(this.profileService.createProfile(profileDTO), HttpStatus.OK);
+    @PostMapping(path = "/create")
+    public ResponseEntity<ProfileDTO> createProfile(@Valid @RequestBody ProfileDTO profileDTO) {
+        Profile profile = this.profileService.createProfile(this.profileMapper.fromDto(profileDTO));
+        return new ResponseEntity<>(this.profileMapper.toDto(profile), HttpStatus.OK);
     }
 
-    @PutMapping(name = "/update/{id}")
-    public ResponseEntity<ProfileDTO> updateProfile(@PathVariable Long id, @RequestBody ProfileDTO profileDTO) {
-        return new ResponseEntity<>(this.profileService.updateProfile(id, profileDTO), HttpStatus.OK);
+    @PutMapping(path = "/update/{id}")
+    public ResponseEntity<ProfileDTO> updateProfile(@PathVariable("id") Long id, @Valid @RequestBody ProfileDTO profileDTO) {
+        Profile profile = this.profileService.updateProfile(id, this.profileMapper.fromDto(profileDTO));
+        return new ResponseEntity<>(this.profileMapper.toDto(profile), HttpStatus.OK);
     }
 
-    @DeleteMapping(name = "/delete/{id}")
-    public ResponseEntity<?> deleteProfile(@PathVariable Long id) {
-        this.profileService.deleteProfile(id);
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<?> deleteProfile(@RequestParam(name = "id", required = false) Long id,
+                                           @RequestParam(name = "email", required = false) String email) {
+        this.profileService.deleteProfileByEither(id, email);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<ProfileDTO> getProfileByEmail(@RequestParam("email") String email) {
+        Profile profileByEmail = this.profileService.getProfileByEmail(email);
+        return new ResponseEntity<>(this.profileMapper.toDto(profileByEmail), HttpStatus.OK);
     }
 }
