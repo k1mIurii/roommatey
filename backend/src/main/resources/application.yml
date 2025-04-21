@@ -4,6 +4,9 @@ server:
 spring:
   profiles:
     active: "dev"
+  batch:
+    jdbc:
+      initialize-schema: always
 ---
 spring:
   config:
