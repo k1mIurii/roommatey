@@ -1,6 +1,6 @@
 package com.example.backend.dtos;
 
-import com.example.backend.entities.Interest;
+import com.example.backend.entities.Hobby;
 import com.example.backend.entities.Language;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public class BioDTO {
     private String content;
 
     @NotNull
-    private Set<Interest> interests;
+    private Set<Hobby> hobbies;
 
     @NotNull
     private Set<Language> languages;

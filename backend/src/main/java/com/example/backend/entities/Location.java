@@ -2,6 +2,7 @@ package com.example.backend.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -9,7 +10,10 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "locations")
+@Table(name = "locations", indexes = {
+        @Index(name = "zip_idx", columnList = "zip"),
+        @Index(name = "city_idx", columnList = "city")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Location extends BaseEntity {

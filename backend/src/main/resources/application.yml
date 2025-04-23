@@ -4,6 +4,13 @@ server:
 spring:
   profiles:
     active: "dev"
+  batch:
+    jdbc:
+      initialize-schema: always
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
 ---
 spring:
   config:
@@ -16,7 +23,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         order_inserts: true

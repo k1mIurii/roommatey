@@ -1,7 +1,8 @@
 package com.example.backend.entities;
 
-import com.example.backend.enums.Proficiency;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,5 @@ public class Language extends BaseEntity{
 
     @Column
     private String name;
-
-    @Column(name = "proficiency")
-    @Enumerated(EnumType.STRING)
-    private Proficiency proficiency;
 
 }
