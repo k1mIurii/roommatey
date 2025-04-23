@@ -23,7 +23,7 @@ public class Bio extends BaseEntity{
             joinColumns = @JoinColumn(name = "bio_id"),
             inverseJoinColumns = @JoinColumn(name = "interest_id")
     )
-    private Set<Interest> interests;
+    private Set<Hobby> hobbies;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

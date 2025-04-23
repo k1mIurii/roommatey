@@ -12,7 +12,7 @@ public class BioMapperImpl implements BioMapper {
     public Bio fromDto(BioDTO bioDTO) {
         Bio bio = Bio.builder()
                 .content(bioDTO.getContent())
-                .interests(bioDTO.getInterests())
+                .hobbies(bioDTO.getHobbies())
                 .languages(bioDTO.getLanguages())
                 .build();
         bio.setId(bioDTO.getId());
@@ -24,7 +24,7 @@ public class BioMapperImpl implements BioMapper {
         return BioDTO.builder()
                 .id(bio.getId())
                 .content(bio.getContent())
-                .interests(bio.getInterests())
+                .hobbies(bio.getHobbies())
                 .languages(bio.getLanguages())
                 .build();
     }

@@ -2,7 +2,7 @@ import csv,os
 from collections import defaultdict
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-csv_path = os.path.join(script_dir, "uszipcodes.csv")
+csv_path = os.path.join(script_dir, "locations.csv")
 
 zip_counts = defaultdict(int)
 duplicates = []
