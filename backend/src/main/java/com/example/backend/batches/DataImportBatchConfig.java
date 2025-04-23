@@ -6,6 +6,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -107,11 +108,13 @@ public class DataImportBatchConfig {
     public Job importDataJob(JobRepository jobRepository,
                              JobExecutionListener listener,
                              Step firstStep,
-                             Step secondStep) {
+                             Step secondStep,
+                             JobExecutionDecider decider) {
         return new JobBuilder("importDataJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(firstStep)
+                .start(decider).on("SKIP").end()
+                .from(decider).on("CONTINUE").to(firstStep)
                 .next(secondStep)
                 .end()
                 .build();
