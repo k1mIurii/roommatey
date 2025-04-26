@@ -1,11 +1,9 @@
 package com.example.backend.entities;
 
-import com.example.backend.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Builder
 @Getter
@@ -16,7 +14,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Preference extends BaseEntity {
 
-    @OneToOne(mappedBy = "preference", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
     @Column(name = "min_age")
@@ -24,12 +23,6 @@ public class Preference extends BaseEntity {
 
     @Column(name = "max_age")
     private Integer maxAge;
-
-    @ElementCollection(targetClass = Gender.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "gender_preferences",
-            joinColumns = @JoinColumn(name = "preference_id"))
-    private Set<Gender> preferredGenders;
 
     @Column(name = "budget_min")
     private Integer budgetMin;
@@ -43,7 +36,7 @@ public class Preference extends BaseEntity {
     @Column(name = "desired_move_out_date")
     private LocalDate desiredMoveOutDate;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 

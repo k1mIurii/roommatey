@@ -14,7 +14,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Listing extends BaseEntity {
 
-    @OneToOne(mappedBy = "listing")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
     @Column(name = "title")
@@ -41,4 +42,10 @@ public class Listing extends BaseEntity {
 
     @Column(name = "smoke_free")
     private Boolean isSmokeFree;
+
+    @Column(name = "min_age")
+    private Integer minAge;
+
+    @Column(name = "max_age")
+    private Integer maxAge;
 }

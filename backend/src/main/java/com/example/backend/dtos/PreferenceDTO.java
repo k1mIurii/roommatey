@@ -1,6 +1,5 @@
 package com.example.backend.dtos;
 
-import com.example.backend.enums.Gender;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @Builder
@@ -20,13 +18,13 @@ public class PreferenceDTO {
     private Long id;
 
     @NotNull
+    private Long profileId;
+
+    @NotNull
     private Integer minAge;
 
     @NotNull
     private Integer maxAge;
-
-    @NotNull
-    private Set<Gender> preferredGenders;
 
     @NotNull
     private Integer budgetMin;

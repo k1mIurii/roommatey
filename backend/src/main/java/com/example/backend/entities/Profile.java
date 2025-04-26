@@ -46,12 +46,4 @@ public class Profile extends BaseEntity {
 
     @Column(name = "housing_needed")
     private Boolean isHousingNeeded = Boolean.FALSE;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "listing_id", referencedColumnName = "id")
-    private Listing listing;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "preference_id", referencedColumnName = "id")
-    private Preference preference;
 }

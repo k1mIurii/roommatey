@@ -6,7 +6,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -36,16 +39,11 @@ public class ProfileDTO {
     @NotNull
     private Gender gender;
 
+    @NotNull
     private boolean isRoommateNeeded;
 
-    private boolean isHousingNeeded;
-
-    @Valid
-    private ListingDTO listing;
-
     @NotNull
-    @Valid
-    private PreferenceDTO preference;
+    private boolean isHousingNeeded;
 
     @NotNull
     @Valid

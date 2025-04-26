@@ -3,8 +3,6 @@ package com.example.backend.mappers.impl;
 import com.example.backend.dtos.ProfileDTO;
 import com.example.backend.entities.Profile;
 import com.example.backend.mappers.BioMapper;
-import com.example.backend.mappers.ListingMapper;
-import com.example.backend.mappers.PreferenceMapper;
 import com.example.backend.mappers.ProfileMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,8 +15,6 @@ import java.time.Period;
 public class ProfileMapperImpl implements ProfileMapper {
 
     private final BioMapper bioMapper;
-    private final ListingMapper listingMapper;
-    private final PreferenceMapper preferenceMapper;
 
     @Override
     public Profile fromDto(ProfileDTO profileDTO) {
@@ -33,10 +29,6 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .bio(
                         bioMapper.fromDto(profileDTO.getBio())
                 )
-                .listing(
-                        profileDTO.getListing() != null ? listingMapper.fromDto(profileDTO.getListing()) : null
-                )
-                .preference(preferenceMapper.fromDto(profileDTO.getPreference()))
                 .build();
         profile.setId(profileDTO.getId());
         return profile;
@@ -57,10 +49,6 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .bio(
                         bioMapper.toDto(profile.getBio())
                 )
-                .listing(
-                        profile.getListing() != null ? listingMapper.toDto(profile.getListing()) : null
-                )
-                .preference(preferenceMapper.toDto(profile.getPreference()))
                 .build();
     }
 

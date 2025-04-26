@@ -17,6 +17,9 @@ public class ListingDTO {
 
     private Long id;
 
+    @NotNull
+    private Long profileId;
+
     @NotBlank
     private String title;
 
