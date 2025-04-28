@@ -1,18 +1,18 @@
 package com.example.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @Entity
-@Table(name = "pictures")
+@Table(name = "images", indexes = {
+        @Index(name = "link_idx", columnList = "link")
+})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Picture extends BaseEntity{
+public class Image extends BaseEntity{
 
     @Column(name = "link")
     private String link;

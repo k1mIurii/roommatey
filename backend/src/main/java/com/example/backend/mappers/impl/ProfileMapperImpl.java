@@ -4,6 +4,7 @@ import com.example.backend.dtos.ProfileDTO;
 import com.example.backend.entities.Profile;
 import com.example.backend.mappers.BioMapper;
 import com.example.backend.mappers.ProfileMapper;
+import com.example.backend.services.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.time.Period;
 public class ProfileMapperImpl implements ProfileMapper {
 
     private final BioMapper bioMapper;
+    private final ImageService imageService;
 
     @Override
     public Profile fromDto(ProfileDTO profileDTO) {
@@ -49,6 +51,7 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .bio(
                         bioMapper.toDto(profile.getBio())
                 )
+                .images(imageService.getImagesByProfileId(profile.getId()))
                 .build();
     }
 

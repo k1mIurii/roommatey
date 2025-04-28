@@ -5,6 +5,7 @@ import com.example.backend.entities.Listing;
 import com.example.backend.entities.Profile;
 import com.example.backend.mappers.AddressMapper;
 import com.example.backend.mappers.ListingMapper;
+import com.example.backend.services.ImageService;
 import com.example.backend.services.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -16,6 +17,7 @@ public class ListingMapperImpl implements ListingMapper {
 
     private final AddressMapper addressMapper;
     private final ProfileService profileService;
+    private final ImageService imageService;
 
     @Override
     public Listing fromDto(ListingDTO listingDTO) {
@@ -54,6 +56,7 @@ public class ListingMapperImpl implements ListingMapper {
                 .availableTo(listing.getAvailableTo())
                 .isPetFriendly(listing.getIsPetFriendly())
                 .isSmokeFree(listing.getIsSmokeFree())
+                .images(imageService.getImagesByListingId(listing.getId()))
                 .build();
     }
 }

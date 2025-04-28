@@ -1,7 +1,7 @@
 package com.example.backend.services.impl;
 
 import com.example.backend.entities.Hobby;
-import com.example.backend.repositories.HobbyRepository;
+import com.example.backend.repositories.jpa.HobbyRepository;
 import com.example.backend.services.HobbyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -41,4 +42,6 @@ public class ListingDTO {
     private boolean isPetFriendly;
 
     private boolean isSmokeFree;
+
+    private List<String> images;
 }

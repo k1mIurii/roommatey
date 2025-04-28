@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -48,4 +49,6 @@ public class ProfileDTO {
     @NotNull
     @Valid
     private BioDTO bio;
+
+    private List<String> images;
 }

@@ -2,7 +2,7 @@ package com.example.backend.services.impl;
 
 import com.example.backend.entities.Listing;
 import com.example.backend.exceptions.RecordNotFoundException;
-import com.example.backend.repositories.ListingRepository;
+import com.example.backend.repositories.jpa.ListingRepository;
 import com.example.backend.services.ListingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,7 +15,13 @@ import java.time.LocalDateTime;
 public class ListingServiceImpl implements ListingService {
     
     private final ListingRepository listingRepository;
-    
+
+    @Override
+    public Listing getListingById(Long id) {
+        return this.listingRepository.findByProfileIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Listing with id %s not found", id)));
+    }
+
     @Override
     public Listing createListing(Listing listing) {
         return this.listingRepository.save(listing);

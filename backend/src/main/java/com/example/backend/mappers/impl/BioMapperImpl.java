@@ -4,7 +4,7 @@ import com.example.backend.dtos.BioDTO;
 import com.example.backend.entities.BaseEntity;
 import com.example.backend.entities.Bio;
 import com.example.backend.mappers.BioMapper;
-import com.example.backend.repositories.HobbyRepository;
+import com.example.backend.repositories.jpa.HobbyRepository;
 import com.example.backend.repositories.jpa.LanguageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

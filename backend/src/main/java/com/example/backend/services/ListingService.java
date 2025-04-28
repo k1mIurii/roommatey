@@ -3,6 +3,7 @@ package com.example.backend.services;
 import com.example.backend.entities.Listing;
 
 public interface ListingService {
+    Listing getListingById(Long id);
 
     Listing createListing(Listing listing);
 

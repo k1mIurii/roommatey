@@ -2,7 +2,7 @@ package com.example.backend.services.impl;
 
 import com.example.backend.entities.Preference;
 import com.example.backend.exceptions.RecordNotFoundException;
-import com.example.backend.repositories.PreferenceRepository;
+import com.example.backend.repositories.jpa.PreferenceRepository;
 import com.example.backend.services.PreferenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;

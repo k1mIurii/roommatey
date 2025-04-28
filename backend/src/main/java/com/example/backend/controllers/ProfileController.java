@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "/api/v1/profiles")
@@ -18,7 +19,7 @@ public class ProfileController {
     private final ProfileMapper profileMapper;
     private final ProfileService profileService;
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/get/{id}")
     public ResponseEntity<ProfileDTO> getProfile(@PathVariable("id") Long id) {
         Profile profile = this.profileService.getProfileById(id);
         return new ResponseEntity<>(this.profileMapper.toDto(profile), HttpStatus.OK);
